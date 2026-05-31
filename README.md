@@ -268,7 +268,7 @@
         engine: "RB26DETT — Twin-Turbo 2.6L Inline-6", power: "280 hp", drive: "ATTESA E-TS AWD", weight: "1,430 kg",
         description: "The R32 GT-R ended Porsche's dominance at Spa-Francorchamps and earned the name 'Godzilla' from the Australian press. Its RB26DETT engine and ATTESA all-wheel drive system set a new benchmark in performance.",
         tag: "Godzilla", color: "#C8A96E",
-        img: "https://images.unsplash.com/photo-1632245889029-e406faaa34cd?w=900&q=80"
+        img: "[https://images.unsplash.com/photo-1632245889029-e406faaa34cd?w=900&q=80](https://cdn.motor1.com/images/mgl/P3nO74/s1/2000-nissan-skyline-r34-gt-r-by-kaizo-industries-driven-by-paul-walker-in-fast-and-furious-bonham-s-auction.webp)"
       },
       {
         id: 2, name: "Toyota Supra", code: "JZA80", year: "1993–2002",
