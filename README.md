@@ -49,7 +49,7 @@
     .hero-bg { position: absolute; inset: 0; background: linear-gradient(135deg, #0a0a0a 0%, #111 40%, #0d0d0d 100%); }
     .hero-img {
       position: absolute; right: 0; top: 0; bottom: 0; width: 55%;
-      background: url('https://images.unsplash.com/photo-1632245889029-e406faaa34cd?w=1200&q=80') center/cover;
+      background: url('https://upload.wikimedia.org/wikipedia/commons/0/04/Nissan_Skyline_GT-R_R32_Gun_Grey_Metallic_front_left.jpg') center/cover;
       opacity: 0.15;
     }
     .hero-fade { position: absolute; inset: 0; background: linear-gradient(90deg, #0a0a0a 45%, transparent 100%); }
@@ -87,7 +87,7 @@
       transition: transform 0.4s cubic-bezier(.25,.8,.25,1); overflow: hidden;
     }
     .car-card:hover { transform: translateY(-6px); }
-    .card-img-wrap { height: 220px; overflow: hidden; }
+    .card-img-wrap { height: 220px; overflow: hidden; background: #111; }
     .card-img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(20%); transition: filter 0.4s, transform 0.6s; display: block; }
     .car-card:hover .card-img { filter: grayscale(0%); transform: scale(1.03); }
     .card-body { padding: 24px; }
@@ -268,42 +268,42 @@
         engine: "RB26DETT — Twin-Turbo 2.6L Inline-6", power: "280 hp", drive: "ATTESA E-TS AWD", weight: "1,430 kg",
         description: "The R32 GT-R ended Porsche's dominance at Spa-Francorchamps and earned the name 'Godzilla' from the Australian press. Its RB26DETT engine and ATTESA all-wheel drive system set a new benchmark in performance.",
         tag: "Godzilla", color: "#C8A96E",
-        img: "[https://images.unsplash.com/photo-1632245889029-e406faaa34cd?w=900&q=80](https://cdn.motor1.com/images/mgl/P3nO74/s1/2000-nissan-skyline-r34-gt-r-by-kaizo-industries-driven-by-paul-walker-in-fast-and-furious-bonham-s-auction.webp)"
+        img: "https://upload.wikimedia.org/wikipedia/commons/0/04/Nissan_Skyline_GT-R_R32_Gun_Grey_Metallic_front_left.jpg"
       },
       {
         id: 2, name: "Toyota Supra", code: "JZA80", year: "1993–2002",
         engine: "2JZ-GTE — Twin-Turbo 3.0L Inline-6", power: "280 hp (factory)", drive: "RWD", weight: "1,560 kg",
         description: "The A80 Supra's legendary 2JZ-GTE engine is capable of handling well over 1,000 hp with minimal modifications. Its sequential twin-turbo setup and iron block made it one of the most tunable engines ever built.",
         tag: "The Legend", color: "#A0C4E0",
-        img: "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?w=900&q=80"
+        img: "https://upload.wikimedia.org/wikipedia/commons/f/f3/Toyota_Supra_A80_(54203285362).jpg"
       },
       {
         id: 3, name: "Mazda RX-7", code: "FD3S", year: "1991–2002",
         engine: "13B-REW — Sequential Twin-Rotor Wankel", power: "255 hp", drive: "RWD", weight: "1,280 kg",
         description: "The FD RX-7 was engineering poetry — sequential twin turbos on a rotary engine, wrapped in one of the most beautiful bodies ever penned. Its 50/50 weight distribution and feather-light chassis made it a driver's dream.",
         tag: "Rotary Soul", color: "#D4A0A0",
-        img: "https://images.unsplash.com/photo-1614162692292-7ac56d7f7f1e?w=900&q=80"
+        img: "https://upload.wikimedia.org/wikipedia/commons/3/33/The_frontview_of_Mazda_RX-7_(FD3S).JPG"
       },
       {
         id: 4, name: "Honda NSX", code: "NA1", year: "1990–2005",
         engine: "C30A — Naturally Aspirated 3.0L V6", power: "270 hp", drive: "RWD", weight: "1,370 kg",
         description: "Developed with input from Ayrton Senna, the NSX proved Japan could build a supercar rivaling Ferrari. Its all-aluminium monocoque, mid-engine layout, and VTEC V6 offered supercar performance with everyday reliability.",
         tag: "The Daily Supercar", color: "#A8D8A8",
-        img: "https://images.unsplash.com/photo-1612825173281-9a193378527e?w=900&q=80"
+        img: "https://upload.wikimedia.org/wikipedia/commons/b/b2/Honda_NSX_(NA1)_front.JPG"
       },
       {
         id: 5, name: "Mitsubishi Lancer Evolution", code: "CP9A", year: "1999–2001",
         engine: "4G63T — Turbocharged 2.0L Inline-4", power: "280 hp", drive: "AYC AWD", weight: "1,350 kg",
         description: "Born from rally racing, the Evo VI Tommi Mäkinen Edition was raw, purpose-built performance. Its active yaw control and viscous centre differential gave drivers superhuman cornering ability on any surface.",
         tag: "Rally Bred", color: "#E0C080",
-        img: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=900&q=80"
+        img: "https://upload.wikimedia.org/wikipedia/commons/e/ea/The_frontview_of_Mitsubishi_LANCER_Evolution_VI_GSR.JPG"
       },
       {
         id: 6, name: "Subaru Impreza WRX STI", code: "GC8", year: "1994–2000",
         engine: "EJ20 — Turbocharged 2.0L Flat-4", power: "280 hp", drive: "DCCD AWD", weight: "1,240 kg",
         description: "The GC8 STI combined the boxer engine's low centre of gravity with Subaru's driver-controlled centre differential. Its iconic exhaust note and all-weather capability made it a rally icon that translated perfectly to the road.",
         tag: "Boxer Spirit", color: "#80A8E0",
-        img: "https://images.unsplash.com/photo-1607853202273-797f1c22a38e?w=900&q=80"
+        img: "https://upload.wikimedia.org/wikipedia/commons/1/13/Tuned_Subaru_Impreza_WRX_STi_(GC8)_at_night_front.JPG"
       }
     ];
 
