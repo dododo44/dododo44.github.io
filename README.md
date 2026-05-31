@@ -1,749 +1,290 @@
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>JDM Heritage | Japanese Domestic Market Classics</title>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Barlow:wght@300;400;500;600&family=Barlow+Condensed:wght@400;500;600;700&display=swap" rel="stylesheet">
-<style>
-  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+import { useState } from "react";
 
-  :root {
-    --black: #0a0a0a;
-    --off-black: #111111;
-    --dark: #1a1a1a;
-    --mid: #2c2c2c;
-    --steel: #888;
-    --light: #c8c8c8;
-    --white: #f5f3ef;
-    --gold: #c9a84c;
-    --gold-light: #e4c97a;
-    --red: #c0392b;
-  }
+const cars = [
+  {
+    id: 1,
+    name: "Nissan Skyline GT-R",
+    code: "BNR32",
+    year: "1989–1994",
+    engine: "RB26DETT — Twin-Turbo 2.6L Inline-6",
+    power: "280 hp",
+    drive: "ATTESA E-TS AWD",
+    weight: "1,430 kg",
+    description:
+      "The R32 GT-R ended Porsche's dominance at Spa-Francorchamps and earned the name 'Godzilla' from the Australian press. Its RB26DETT engine and ATTESA all-wheel drive system set a new benchmark in performance.",
+    tag: "Godzilla",
+    color: "#C8A96E",
+    img: "https://images.unsplash.com/photo-1632245889029-e406faaa34cd?w=900&q=80",
+  },
+  {
+    id: 2,
+    name: "Toyota Supra",
+    code: "JZA80",
+    year: "1993–2002",
+    engine: "2JZ-GTE — Twin-Turbo 3.0L Inline-6",
+    power: "280 hp (factory)",
+    drive: "RWD",
+    weight: "1,560 kg",
+    description:
+      "The A80 Supra's legendary 2JZ-GTE engine is capable of handling well over 1,000 hp with minimal modifications. Its sequential twin-turbo setup and iron block made it one of the most tunable engines ever built.",
+    tag: "The Legend",
+    color: "#A0C4E0",
+    img: "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?w=900&q=80",
+  },
+  {
+    id: 3,
+    name: "Mazda RX-7",
+    code: "FD3S",
+    year: "1991–2002",
+    engine: "13B-REW — Sequential Twin-Rotor Wankel",
+    power: "255 hp",
+    drive: "RWD",
+    weight: "1,280 kg",
+    description:
+      "The FD RX-7 was engineering poetry — sequential twin turbos on a rotary engine, wrapped in one of the most beautiful bodies ever penned. Its 50/50 weight distribution and feather-light chassis made it a driver's dream.",
+    tag: "Rotary Soul",
+    color: "#D4A0A0",
+    img: "https://images.unsplash.com/photo-1614162692292-7ac56d7f7f1e?w=900&q=80",
+  },
+  {
+    id: 4,
+    name: "Honda NSX",
+    code: "NA1",
+    year: "1990–2005",
+    engine: "C30A — Naturally Aspirated 3.0L V6",
+    power: "270 hp",
+    drive: "RWD",
+    weight: "1,370 kg",
+    description:
+      "Developed with input from Ayrton Senna, the NSX proved Japan could build a supercar rivaling Ferrari. Its all-aluminium monocoque, mid-engine layout, and VTEC V6 offered supercar performance with everyday reliability.",
+    tag: "The Daily Supercar",
+    color: "#A8D8A8",
+    img: "https://images.unsplash.com/photo-1612825173281-9a193378527e?w=900&q=80",
+  },
+  {
+    id: 5,
+    name: "Mitsubishi Lancer Evolution",
+    code: "CP9A",
+    year: "1999–2001",
+    engine: "4G63T — Turbocharged 2.0L Inline-4",
+    power: "280 hp",
+    drive: "AYC AWD",
+    weight: "1,350 kg",
+    description:
+      "Born from rally racing, the Evo VI Tommi Mäkinen Edition was raw, purpose-built performance. Its active yaw control and viscous centre differential gave drivers superhuman cornering ability on any surface.",
+    tag: "Rally Bred",
+    color: "#E0C080",
+    img: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=900&q=80",
+  },
+  {
+    id: 6,
+    name: "Subaru Impreza WRX STI",
+    code: "GC8",
+    year: "1994–2000",
+    engine: "EJ20 — Turbocharged 2.0L Flat-4",
+    power: "280 hp",
+    drive: "DCCD AWD",
+    weight: "1,240 kg",
+    description:
+      "The GC8 STI combined the boxer engine's low centre of gravity with Subaru's driver-controlled centre differential. Its iconic exhaust note and all-weather capability made it a rally icon that translated perfectly to the road.",
+    tag: "Boxer Spirit",
+    color: "#80A8E0",
+    img: "https://images.unsplash.com/photo-1607853202273-797f1c22a38e?w=900&q=80",
+  },
+];
 
-  html { scroll-behavior: smooth; }
+const stats = [
+  { label: "Iconic Models", value: "6" },
+  { label: "Avg. Power Output", value: "274hp" },
+  { label: "Years Covered", value: "1989–2002" },
+  { label: "JDM Legacy", value: "∞" },
+];
 
-  body {
-    background: var(--black);
-    color: var(--white);
-    font-family: 'Barlow', sans-serif;
-    font-weight: 300;
-    overflow-x: hidden;
-  }
+export default function App() {
+  const [active, setActive] = useState(null);
+  const [hoveredCard, setHoveredCard] = useState(null);
 
-  /* NAV */
-  nav {
-    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 1.5rem 4rem;
-    background: linear-gradient(to bottom, rgba(10,10,10,0.95), transparent);
-    border-bottom: 0.5px solid rgba(201,168,76,0.15);
-  }
-  .nav-logo {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-weight: 600; font-size: 1.25rem; letter-spacing: 0.3em;
-    text-transform: uppercase; color: var(--gold);
-  }
-  .nav-logo span { color: var(--white); font-weight: 300; }
-  .nav-links { display: flex; gap: 2.5rem; list-style: none; }
-  .nav-links a {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 0.8rem; letter-spacing: 0.2em; text-transform: uppercase;
-    color: var(--light); text-decoration: none; transition: color 0.3s;
-  }
-  .nav-links a:hover { color: var(--gold); }
-  .nav-cta {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 0.75rem; letter-spacing: 0.2em; text-transform: uppercase;
-    padding: 0.6rem 1.5rem; border: 1px solid var(--gold);
-    color: var(--gold); background: transparent; cursor: pointer;
-    transition: all 0.3s;
-  }
-  .nav-cta:hover { background: var(--gold); color: var(--black); }
+  const selected = cars.find((c) => c.id === active);
 
-  /* HERO */
-  .hero {
-    height: 100vh; position: relative;
-    display: flex; align-items: flex-end;
-    overflow: hidden;
-  }
-  .hero-bg {
-    position: absolute; inset: 0;
-    background:
-      linear-gradient(to right, rgba(10,10,10,0.85) 40%, rgba(10,10,10,0.2) 100%),
-      url('https://images.unsplash.com/photo-1549473472-b8972f16f96d?w=1800&q=80') center/cover no-repeat;
-  }
-  .hero-content {
-    position: relative; z-index: 2;
-    padding: 0 4rem 5rem;
-    max-width: 700px;
-  }
-  .hero-eyebrow {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 0.75rem; letter-spacing: 0.4em; text-transform: uppercase;
-    color: var(--gold); margin-bottom: 1rem;
-    display: flex; align-items: center; gap: 1rem;
-  }
-  .hero-eyebrow::before {
-    content: ''; display: block; width: 40px; height: 1px; background: var(--gold);
-  }
-  .hero-title {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: clamp(3rem, 7vw, 6rem);
-    font-weight: 300; line-height: 1.05;
-    margin-bottom: 1.5rem;
-  }
-  .hero-title em { font-style: italic; color: var(--gold-light); }
-  .hero-sub {
-    font-size: 1rem; color: var(--light); line-height: 1.7;
-    margin-bottom: 2.5rem; font-weight: 300; max-width: 500px;
-  }
-  .hero-btns { display: flex; gap: 1rem; }
-  .btn-primary {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 0.8rem; letter-spacing: 0.2em; text-transform: uppercase;
-    padding: 0.9rem 2.5rem; background: var(--gold); color: var(--black);
-    border: none; cursor: pointer; transition: background 0.3s; text-decoration: none;
-    display: inline-flex; align-items: center;
-  }
-  .btn-primary:hover { background: var(--gold-light); }
-  .btn-ghost {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 0.8rem; letter-spacing: 0.2em; text-transform: uppercase;
-    padding: 0.9rem 2.5rem; background: transparent; color: var(--white);
-    border: 1px solid rgba(255,255,255,0.3); cursor: pointer; transition: all 0.3s;
-    text-decoration: none; display: inline-flex; align-items: center;
-  }
-  .btn-ghost:hover { border-color: var(--gold); color: var(--gold); }
+  return (
+    <div style={{ fontFamily: "'Cormorant Garamond', 'Georgia', serif", background: "#0a0a0a", color: "#e8e2d9", minHeight: "100vh" }}>
+      <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600&family=Montserrat:wght@300;400;500;600;700&display=swap');
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: #111; }
+        ::-webkit-scrollbar-thumb { background: #444; border-radius: 2px; }
+        .nav-link { font-family: 'Montserrat', sans-serif; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: #a09880; text-decoration: none; transition: color 0.3s; cursor: pointer; }
+        .nav-link:hover { color: #e8e2d9; }
+        .car-card { cursor: pointer; transition: transform 0.4s cubic-bezier(.25,.8,.25,1); }
+        .car-card:hover { transform: translateY(-6px); }
+        .stat-num { font-family: 'Cormorant Garamond', serif; font-size: 48px; font-weight: 300; line-height: 1; }
+        .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.92); z-index: 1000; display: flex; align-items: center; justify-content: center; padding: 20px; animation: fadeIn 0.3s ease; }
+        @keyframes fadeIn { from { opacity: 0 } to { opacity: 1 } }
+        .modal-inner { background: #111; border: 1px solid #2a2a2a; max-width: 900px; width: 100%; max-height: 90vh; overflow-y: auto; animation: slideUp 0.35s cubic-bezier(.25,.8,.25,1); }
+        @keyframes slideUp { from { transform: translateY(30px); opacity: 0 } to { transform: translateY(0); opacity: 1 } }
+        .close-btn { background: none; border: 1px solid #333; color: #a09880; font-family: 'Montserrat', sans-serif; font-size: 11px; letter-spacing: 2px; padding: 10px 20px; cursor: pointer; transition: all 0.3s; }
+        .close-btn:hover { border-color: #e8e2d9; color: #e8e2d9; }
+        .spec-row { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid #1e1e1e; }
+        .hero-line { width: 60px; height: 1px; background: #C8A96E; margin: 20px 0; }
+        .section-label { font-family: 'Montserrat', sans-serif; font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: #C8A96E; }
+        .explore-btn { font-family: 'Montserrat', sans-serif; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; background: transparent; border: 1px solid #C8A96E; color: #C8A96E; padding: 14px 32px; cursor: pointer; transition: all 0.3s; }
+        .explore-btn:hover { background: #C8A96E; color: #0a0a0a; }
+        .grid-card-img { width: 100%; height: 220px; object-fit: cover; filter: grayscale(20%); transition: filter 0.4s, transform 0.6s; }
+        .car-card:hover .grid-card-img { filter: grayscale(0%); transform: scale(1.03); }
+        .overflow-hidden { overflow: hidden; }
+      `}</style>
 
-  .hero-stats {
-    position: absolute; bottom: 5rem; right: 4rem; z-index: 2;
-    display: flex; gap: 3rem;
-  }
-  .stat { text-align: center; }
-  .stat-num {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 2.5rem; font-weight: 300; color: var(--gold);
-    display: block; line-height: 1;
-  }
-  .stat-label {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 0.65rem; letter-spacing: 0.25em; text-transform: uppercase;
-    color: var(--steel); margin-top: 0.4rem; display: block;
-  }
+      {/* NAV */}
+      <nav style={{ position: "fixed", top: 0, left: 0, right: 0, zIndex: 100, background: "rgba(10,10,10,0.95)", borderBottom: "1px solid #1a1a1a", padding: "0 48px", height: "64px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+        <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "22px", fontWeight: 300, letterSpacing: "4px", color: "#e8e2d9" }}>
+          JDM<span style={{ color: "#C8A96E" }}>90s</span>
+        </div>
+        <div style={{ display: "flex", gap: "32px" }}>
+          {["Heritage", "Models", "About"].map((l) => (
+            <span key={l} className="nav-link">{l}</span>
+          ))}
+        </div>
+      </nav>
 
-  /* SECTION COMMONS */
-  section { padding: 7rem 4rem; }
-  .section-eyebrow {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 0.7rem; letter-spacing: 0.4em; text-transform: uppercase;
-    color: var(--gold); margin-bottom: 1rem;
-  }
-  .section-title {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: clamp(2rem, 4vw, 3.5rem); font-weight: 300; line-height: 1.1;
-  }
-  .section-title em { font-style: italic; color: var(--gold-light); }
-  .divider {
-    width: 60px; height: 1px; background: var(--gold);
-    margin: 1.5rem 0;
-  }
+      {/* HERO */}
+      <div style={{ paddingTop: "64px", position: "relative", height: "100vh", display: "flex", alignItems: "center", overflow: "hidden" }}>
+        <div style={{ position: "absolute", inset: 0, background: "linear-gradient(135deg, #0a0a0a 0%, #111 40%, #0d0d0d 100%)" }} />
+        <div style={{ position: "absolute", right: 0, top: 0, bottom: 0, width: "55%", background: "url(https://images.unsplash.com/photo-1632245889029-e406faaa34cd?w=1200&q=80) center/cover", opacity: 0.15 }} />
+        <div style={{ position: "absolute", inset: 0, background: "linear-gradient(90deg, #0a0a0a 45%, transparent 100%)" }} />
 
-  /* ABOUT / INTRO */
-  .intro {
-    background: var(--off-black);
-    display: grid; grid-template-columns: 1fr 1fr; gap: 6rem; align-items: center;
-  }
-  .intro-text p {
-    color: var(--light); line-height: 1.85; font-size: 0.95rem;
-    margin-bottom: 1.5rem;
-  }
-  .intro-image-wrap { position: relative; }
-  .intro-image-wrap img {
-    width: 100%; aspect-ratio: 4/3; object-fit: cover; display: block;
-  }
-  .intro-image-wrap::after {
-    content: ''; position: absolute; inset: 0;
-    border: 1px solid rgba(201,168,76,0.3);
-    transform: translate(12px, 12px);
-    pointer-events: none;
-  }
-  .facts-grid {
-    display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 2rem;
-  }
-  .fact {
-    border-left: 2px solid var(--gold); padding-left: 1rem;
-  }
-  .fact-num {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 2rem; font-weight: 300; color: var(--gold); display: block;
-  }
-  .fact-label {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase;
-    color: var(--steel);
-  }
-
-  /* MODELS GRID */
-  .models { background: var(--black); }
-  .models-header {
-    display: flex; justify-content: space-between; align-items: flex-end;
-    margin-bottom: 4rem;
-  }
-  .cars-grid {
-    display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px;
-    background: var(--mid);
-  }
-  .car-card {
-    background: var(--off-black); position: relative;
-    overflow: hidden; cursor: pointer;
-    transition: transform 0.4s;
-  }
-  .car-card:hover { transform: scale(1.02); z-index: 2; }
-  .car-card:hover .car-overlay { opacity: 1; }
-  .car-card:first-child { grid-column: span 2; }
-  .car-img {
-    width: 100%; aspect-ratio: 16/9; object-fit: cover;
-    display: block; transition: transform 0.6s;
-    filter: brightness(0.85) saturate(0.9);
-  }
-  .car-card:hover .car-img { transform: scale(1.05); filter: brightness(0.7) saturate(1.1); }
-  .car-overlay {
-    position: absolute; inset: 0;
-    background: linear-gradient(to top, rgba(10,10,10,0.9) 0%, transparent 50%);
-    opacity: 0.7; transition: opacity 0.4s;
-    display: flex; flex-direction: column; justify-content: flex-end;
-    padding: 2rem;
-  }
-  .car-badge {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 0.65rem; letter-spacing: 0.3em; text-transform: uppercase;
-    color: var(--gold); margin-bottom: 0.4rem;
-  }
-  .car-name {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 1.8rem; font-weight: 300; line-height: 1;
-    margin-bottom: 0.5rem;
-  }
-  .car-spec-inline {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 0.75rem; letter-spacing: 0.15em; color: var(--light);
-    opacity: 0;
-    transition: opacity 0.4s 0.1s;
-  }
-  .car-card:hover .car-spec-inline { opacity: 1; }
-
-  /* FEATURED MODEL */
-  .featured {
-    background: var(--off-black);
-    padding: 0;
-    display: grid; grid-template-columns: 1fr 1fr;
-    min-height: 80vh;
-  }
-  .featured-image {
-    position: relative; overflow: hidden;
-  }
-  .featured-image img {
-    width: 100%; height: 100%; object-fit: cover;
-    display: block; filter: brightness(0.9);
-  }
-  .featured-label {
-    position: absolute; top: 3rem; left: 3rem;
-    background: var(--gold); color: var(--black);
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 0.65rem; letter-spacing: 0.3em; text-transform: uppercase;
-    padding: 0.4rem 1rem;
-  }
-  .featured-content {
-    padding: 5rem; display: flex; flex-direction: column; justify-content: center;
-  }
-  .featured-content .section-title { font-size: clamp(2.5rem, 3.5vw, 4rem); }
-  .featured-content p {
-    color: var(--light); line-height: 1.8; font-size: 0.95rem;
-    margin-bottom: 1.5rem;
-  }
-  .specs-table { margin: 2rem 0; border-collapse: collapse; width: 100%; }
-  .specs-table tr { border-bottom: 0.5px solid rgba(255,255,255,0.08); }
-  .specs-table td { padding: 0.75rem 0; font-size: 0.85rem; }
-  .specs-table td:first-child {
-    font-family: 'Barlow Condensed', sans-serif;
-    letter-spacing: 0.15em; text-transform: uppercase;
-    font-size: 0.7rem; color: var(--steel); width: 40%;
-  }
-  .specs-table td:last-child { color: var(--white); font-weight: 400; }
-  .specs-table td span.highlight { color: var(--gold); }
-
-  /* CULTURE SECTION */
-  .culture {
-    background: var(--black);
-    display: grid; grid-template-columns: 1fr 2fr; gap: 5rem; align-items: start;
-  }
-  .culture-right { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
-  .culture-card {
-    background: var(--off-black); padding: 2rem;
-    border-top: 1px solid var(--gold);
-  }
-  .culture-card h3 {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 1rem; letter-spacing: 0.15em; text-transform: uppercase;
-    color: var(--white); margin-bottom: 1rem;
-  }
-  .culture-card p {
-    color: var(--steel); font-size: 0.85rem; line-height: 1.7;
-  }
-  .culture-num {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 4rem; font-weight: 300; color: rgba(201,168,76,0.15);
-    line-height: 1; margin-bottom: 0.5rem;
-  }
-
-  /* ALL MODELS LIST */
-  .all-models { background: var(--off-black); }
-  .models-list-header {
-    display: grid; grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
-    padding: 0 2rem 1rem;
-    border-bottom: 0.5px solid var(--mid);
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 0.65rem; letter-spacing: 0.3em; text-transform: uppercase;
-    color: var(--steel);
-    margin-bottom: 0;
-  }
-  .model-row {
-    display: grid; grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
-    padding: 1.5rem 2rem; border-bottom: 0.5px solid rgba(255,255,255,0.05);
-    align-items: center; transition: background 0.2s; cursor: pointer;
-  }
-  .model-row:hover { background: rgba(201,168,76,0.05); }
-  .model-row:hover .model-name { color: var(--gold); }
-  .model-name {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 1.2rem; font-weight: 300; transition: color 0.2s;
-  }
-  .model-maker {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase;
-    color: var(--steel); margin-top: 0.2rem;
-  }
-  .model-cell {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 0.85rem; color: var(--light); letter-spacing: 0.05em;
-  }
-  .model-cell.gold { color: var(--gold); }
-  .status-badge {
-    display: inline-block; padding: 0.25rem 0.75rem;
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase;
-    border: 1px solid;
-  }
-  .status-available { border-color: #2ecc71; color: #2ecc71; }
-  .status-sold { border-color: var(--red); color: var(--red); }
-  .status-reserved { border-color: var(--gold); color: var(--gold); }
-
-  /* FOOTER */
-  footer {
-    background: var(--black); border-top: 0.5px solid var(--mid);
-    padding: 4rem;
-    display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 3rem;
-  }
-  .footer-brand {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 1.5rem; font-weight: 600; letter-spacing: 0.3em;
-    color: var(--gold); margin-bottom: 1rem;
-  }
-  .footer-brand span { color: var(--white); font-weight: 300; }
-  footer p { color: var(--steel); font-size: 0.85rem; line-height: 1.7; }
-  .footer-col h4 {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 0.7rem; letter-spacing: 0.3em; text-transform: uppercase;
-    color: var(--white); margin-bottom: 1.5rem;
-  }
-  .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 0.75rem; }
-  .footer-col a {
-    color: var(--steel); font-size: 0.85rem; text-decoration: none; transition: color 0.2s;
-  }
-  .footer-col a:hover { color: var(--gold); }
-  .footer-bottom {
-    padding: 1.5rem 4rem; border-top: 0.5px solid var(--mid);
-    display: flex; justify-content: space-between; align-items: center;
-  }
-  .footer-bottom p {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--steel);
-  }
-
-  /* SCROLL REVEAL */
-  .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.7s, transform 0.7s; }
-  .reveal.visible { opacity: 1; transform: translateY(0); }
-  .reveal-delay-1 { transition-delay: 0.1s; }
-  .reveal-delay-2 { transition-delay: 0.2s; }
-  .reveal-delay-3 { transition-delay: 0.3s; }
-
-  /* HERO ANIMATION */
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(30px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-  .hero-eyebrow { animation: fadeUp 0.8s ease both 0.3s; }
-  .hero-title { animation: fadeUp 0.8s ease both 0.5s; }
-  .hero-sub { animation: fadeUp 0.8s ease both 0.7s; }
-  .hero-btns { animation: fadeUp 0.8s ease both 0.9s; }
-  .hero-stats { animation: fadeUp 0.8s ease both 1.1s; }
-
-  @media (max-width: 900px) {
-    nav { padding: 1.5rem 2rem; }
-    .nav-links { display: none; }
-    section { padding: 4rem 2rem; }
-    .intro, .featured, .culture { grid-template-columns: 1fr; }
-    .cars-grid { grid-template-columns: 1fr; }
-    .car-card:first-child { grid-column: span 1; }
-    footer { grid-template-columns: 1fr 1fr; }
-    .models-list-header, .model-row { grid-template-columns: 2fr 1fr 1fr; }
-    .models-list-header > *:nth-child(4),
-    .models-list-header > *:nth-child(5),
-    .model-row > *:nth-child(4),
-    .model-row > *:nth-child(5) { display: none; }
-    .hero-stats { display: none; }
-    .hero-content { padding: 0 2rem 4rem; }
-  }
-</style>
-</head>
-<body>
-
-<!-- NAV -->
-<nav>
-  <div class="nav-logo">JDM <span>Heritage</span></div>
-  <ul class="nav-links">
-    <li><a href="#models">Models</a></li>
-    <li><a href="#featured">Icon</a></li>
-    <li><a href="#culture">Culture</a></li>
-    <li><a href="#collection">Collection</a></li>
-  </ul>
-  <button class="nav-cta">Enquire Now</button>
-</nav>
-
-<!-- HERO -->
-<section class="hero">
-  <div class="hero-bg"></div>
-  <div class="hero-content">
-    <div class="hero-eyebrow">Japanese Domestic Market · Est. 1989</div>
-    <h1 class="hero-title">
-      Born in<br><em>Japan.</em><br>Built to Last.
-    </h1>
-    <p class="hero-sub">
-      The legends of 1990s Japanese motorsport culture — meticulously sourced, 
-      authenticated, and presented for collectors who understand the difference.
-    </p>
-    <div class="hero-btns">
-      <a href="#models" class="btn-primary">View Collection</a>
-      <a href="#culture" class="btn-ghost">Our Story</a>
-    </div>
-  </div>
-  <div class="hero-stats">
-    <div class="stat"><span class="stat-num">47</span><span class="stat-label">Cars Available</span></div>
-    <div class="stat"><span class="stat-num">12</span><span class="stat-label">Icons in Stock</span></div>
-    <div class="stat"><span class="stat-num">96%</span><span class="stat-label">Original Parts</span></div>
-  </div>
-</section>
-
-<!-- INTRO -->
-<section class="intro">
-  <div class="intro-text reveal">
-    <p class="section-eyebrow">The JDM Era</p>
-    <h2 class="section-title">Japan's <em>Golden Decade</em> of Engineering</h2>
-    <div class="divider"></div>
-    <p>
-      The 1990s represent the apex of Japanese automotive engineering. Under the "Gentleman's Agreement," 
-      manufacturers declared a voluntary 276 hp limit — while quietly building engines that far surpassed it. 
-      The result was a generation of cars disguised as everyday transport, engineered as supercars.
-    </p>
-    <p>
-      The Nissan Skyline GT-R, Toyota Supra, Honda NSX, Mazda RX-7 — these were not accidents. They were 
-      the products of a culture that valued precision, innovation, and a quiet, unassuming kind of excellence.
-    </p>
-    <div class="facts-grid">
-      <div class="fact"><span class="fact-num">276</span><span class="fact-label">HP Gentleman's Limit</span></div>
-      <div class="fact"><span class="fact-num">8</span><span class="fact-label">Iconic Models</span></div>
-      <div class="fact"><span class="fact-num">30+</span><span class="fact-label">Years of Legacy</span></div>
-      <div class="fact"><span class="fact-num">↑400%</span><span class="fact-label">Value Growth (10yr)</span></div>
-    </div>
-  </div>
-  <div class="intro-image-wrap reveal reveal-delay-2">
-    <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=900&q=80" alt="JDM Engine Bay">
-  </div>
-</section>
-
-<!-- MODELS GRID -->
-<section class="models" id="models">
-  <div class="models-header">
-    <div>
-      <p class="section-eyebrow">The Collection</p>
-      <h2 class="section-title">Select <em>Inventory</em></h2>
-    </div>
-    <a href="#collection" class="btn-ghost">View All 47 Cars</a>
-  </div>
-
-  <div class="cars-grid">
-    <!-- Featured large card -->
-    <div class="car-card reveal">
-      <img class="car-img" src="https://images.unsplash.com/photo-1549473472-b8972f16f96d?w=1200&q=80" alt="Nissan Skyline GT-R R34">
-      <div class="car-overlay">
-        <span class="car-badge">Nissan · 1999</span>
-        <h3 class="car-name">Skyline GT-R R34</h3>
-        <span class="car-spec-inline">RB26DETT · 2.6L Twin-Turbo · AWD · 6-Speed Sequential</span>
+        <div style={{ position: "relative", padding: "0 80px", maxWidth: "680px" }}>
+          <div className="section-label">Japanese Domestic Market · 1989–2002</div>
+          <div className="hero-line" />
+          <h1 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "clamp(48px, 7vw, 88px)", fontWeight: 300, lineHeight: 1.0, color: "#e8e2d9", marginBottom: "24px" }}>
+            Born in<br /><span style={{ fontStyle: "italic", color: "#C8A96E" }}>Japan.</span><br />Built for<br />Eternity.
+          </h1>
+          <p style={{ fontFamily: "'Montserrat', sans-serif", fontSize: "13px", fontWeight: 300, lineHeight: 1.9, color: "#8a8070", maxWidth: "420px", marginBottom: "40px" }}>
+            The golden era of Japanese performance. An era when engineers ignored convention and built machines that would define automotive culture for decades.
+          </p>
+          <button className="explore-btn" onClick={() => document.getElementById("models").scrollIntoView({ behavior: "smooth" })}>
+            Discover the Models
+          </button>
+        </div>
       </div>
-    </div>
-    <!-- Right cards -->
-    <div class="car-card reveal reveal-delay-1">
-      <img class="car-img" src="https://images.unsplash.com/photo-1654704089641-abee50d23b7a?w=800&q=80" alt="Toyota Supra MK4">
-      <div class="car-overlay">
-        <span class="car-badge">Toyota · 1993</span>
-        <h3 class="car-name">Supra MK4</h3>
-        <span class="car-spec-inline">2JZ-GTE · 3.0L Twin-Turbo · 6-Speed Manual</span>
+
+      {/* STATS */}
+      <div style={{ background: "#0d0d0d", borderTop: "1px solid #1a1a1a", borderBottom: "1px solid #1a1a1a", padding: "60px 80px", display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "40px" }}>
+        {stats.map((s) => (
+          <div key={s.label} style={{ textAlign: "center" }}>
+            <div className="stat-num" style={{ color: "#C8A96E" }}>{s.value}</div>
+            <div style={{ fontFamily: "'Montserrat', sans-serif", fontSize: "10px", letterSpacing: "2px", textTransform: "uppercase", color: "#5a5040", marginTop: "10px" }}>{s.label}</div>
+          </div>
+        ))}
       </div>
-    </div>
-    <div class="car-card reveal reveal-delay-1">
-      <img class="car-img" src="https://images.unsplash.com/photo-1569192545261-936d1ab6cf2c?w=800&q=80" alt="Mazda RX-7 FD">
-      <div class="car-overlay">
-        <span class="car-badge">Mazda · 1992</span>
-        <h3 class="car-name">RX-7 FD3S</h3>
-        <span class="car-spec-inline">13B-REW · Twin-Rotor · Sequential Twin-Turbo</span>
+
+      {/* INTRO TEXT */}
+      <div style={{ padding: "100px 80px", maxWidth: "900px" }}>
+        <div className="section-label">The Philosophy</div>
+        <div className="hero-line" />
+        <p style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "28px", fontWeight: 300, lineHeight: 1.6, color: "#c8c0b0" }}>
+          In the 1990s, Japan's automakers operated under a gentleman's agreement — a self-imposed 280 hp limit. What they built within that constraint defied all expectation.
+        </p>
       </div>
-    </div>
-    <div class="car-card reveal reveal-delay-2">
-      <img class="car-img" src="https://images.unsplash.com/photo-1740845871487-6c02a6c77f10?w=800&q=80" alt="Honda NSX">
-      <div class="car-overlay">
-        <span class="car-badge">Honda · 1990</span>
-        <h3 class="car-name">NSX Type R</h3>
-        <span class="car-spec-inline">C30A · 3.0L VTEC · Mid-Engine · RWD</span>
+
+      {/* MODELS GRID */}
+      <div id="models" style={{ padding: "0 80px 100px" }}>
+        <div className="section-label">The Machines</div>
+        <div className="hero-line" />
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "2px", marginTop: "40px" }}>
+          {cars.map((car) => (
+            <div key={car.id} className="car-card" onClick={() => setActive(car.id)}
+              onMouseEnter={() => setHoveredCard(car.id)} onMouseLeave={() => setHoveredCard(null)}
+              style={{ background: "#0d0d0d", border: "1px solid #1a1a1a", position: "relative" }}>
+              <div className="overflow-hidden" style={{ height: "220px" }}>
+                <img src={car.img} alt={car.name} className="grid-card-img" onError={(e) => { e.target.style.display = "none"; }} />
+              </div>
+              <div style={{ padding: "24px" }}>
+                <div style={{ fontFamily: "'Montserrat', sans-serif", fontSize: "9px", letterSpacing: "2px", textTransform: "uppercase", color: car.color, marginBottom: "8px" }}>{car.tag}</div>
+                <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "22px", fontWeight: 400, color: "#e8e2d9", marginBottom: "4px" }}>{car.name}</div>
+                <div style={{ fontFamily: "'Montserrat', sans-serif", fontSize: "10px", color: "#5a5040", letterSpacing: "1px" }}>{car.code} · {car.year}</div>
+                <div style={{ marginTop: "20px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                  <span style={{ fontFamily: "'Montserrat', sans-serif", fontSize: "11px", color: "#a09880" }}>{car.power}</span>
+                  <span style={{ fontFamily: "'Montserrat', sans-serif", fontSize: "10px", letterSpacing: "2px", color: car.color, textTransform: "uppercase" }}>View →</span>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
-    </div>
-    <div class="car-card reveal reveal-delay-2">
-      <img class="car-img" src="https://images.unsplash.com/photo-1558199099-ab7fa8a61cb4?w=800&q=80" alt="Mitsubishi Lancer Evo">
-      <div class="car-overlay">
-        <span class="car-badge">Mitsubishi · 1996</span>
-        <h3 class="car-name">Lancer Evo IV</h3>
-        <span class="car-spec-inline">4G63T · 2.0L Turbo · AWD · Rally-Bred</span>
+
+      {/* HERITAGE STRIP */}
+      <div style={{ background: "#C8A96E", padding: "60px 80px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+        <div>
+          <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "36px", fontWeight: 300, color: "#0a0a0a", lineHeight: 1.2 }}>
+            The 280hp Gentleman's<br />Agreement
+          </div>
+        </div>
+        <div style={{ maxWidth: "400px" }}>
+          <p style={{ fontFamily: "'Montserrat', sans-serif", fontSize: "12px", lineHeight: 1.9, color: "#3a3020", fontWeight: 300 }}>
+            From 1988 to 2004, Japanese manufacturers voluntarily capped advertised power at 280 horsepower — a gentleman's agreement to avoid a power war. Reality? Most exceeded it. The Supra's 2JZ was tuned to 320+. The limit was fiction.
+          </p>
+        </div>
       </div>
+
+      {/* FOOTER */}
+      <footer style={{ background: "#080808", borderTop: "1px solid #1a1a1a", padding: "60px 80px", display: "flex", justifyContent: "space-between", alignItems: "flex-end" }}>
+        <div>
+          <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "28px", fontWeight: 300, color: "#e8e2d9", letterSpacing: "4px", marginBottom: "12px" }}>
+            JDM<span style={{ color: "#C8A96E" }}>90s</span>
+          </div>
+          <div style={{ fontFamily: "'Montserrat', sans-serif", fontSize: "10px", color: "#3a3028", letterSpacing: "1px" }}>
+            Japanese Domestic Market Heritage Archive
+          </div>
+        </div>
+        <div style={{ textAlign: "right" }}>
+          <div style={{ fontFamily: "'Montserrat', sans-serif", fontSize: "10px", color: "#5a5040", letterSpacing: "2px", textTransform: "uppercase", marginBottom: "6px" }}>Created by</div>
+          <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "18px", color: "#C8A96E", fontWeight: 400, letterSpacing: "2px" }}>
+            Dior Jahaj &amp; Mateo Jaho
+          </div>
+          <div style={{ fontFamily: "'Montserrat', sans-serif", fontSize: "10px", color: "#3a3028", marginTop: "4px" }}>
+            Canadian Institute of Technology · 2026
+          </div>
+        </div>
+      </footer>
+
+      {/* MODAL */}
+      {selected && (
+        <div className="modal-overlay" onClick={() => setActive(null)}>
+          <div className="modal-inner" onClick={(e) => e.stopPropagation()}>
+            <div style={{ position: "relative", height: "320px", overflow: "hidden" }}>
+              <img src={selected.img} alt={selected.name} style={{ width: "100%", height: "100%", objectFit: "cover", filter: "brightness(0.6)" }} onError={(e) => { e.target.style.background = "#1a1a1a"; }} />
+              <div style={{ position: "absolute", inset: 0, background: "linear-gradient(0deg, #111 0%, transparent 60%)" }} />
+              <div style={{ position: "absolute", bottom: "32px", left: "40px" }}>
+                <div style={{ fontFamily: "'Montserrat', sans-serif", fontSize: "9px", letterSpacing: "2px", textTransform: "uppercase", color: selected.color, marginBottom: "8px" }}>{selected.tag}</div>
+                <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "42px", fontWeight: 300, color: "#e8e2d9", lineHeight: 1 }}>{selected.name}</h2>
+                <div style={{ fontFamily: "'Montserrat', sans-serif", fontSize: "11px", color: "#7a7060", letterSpacing: "1px", marginTop: "6px" }}>{selected.code} · {selected.year}</div>
+              </div>
+              <button onClick={() => setActive(null)} style={{ position: "absolute", top: "20px", right: "20px", background: "rgba(0,0,0,0.6)", border: "1px solid #333", color: "#a09880", fontFamily: "'Montserrat', sans-serif", fontSize: "18px", width: "36px", height: "36px", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}>×</button>
+            </div>
+            <div style={{ padding: "40px" }}>
+              <p style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "19px", fontWeight: 300, lineHeight: 1.8, color: "#c8c0b0", marginBottom: "36px" }}>{selected.description}</p>
+              <div style={{ borderTop: "1px solid #1e1e1e" }}>
+                {[
+                  ["Engine", selected.engine],
+                  ["Power Output", selected.power],
+                  ["Drivetrain", selected.drive],
+                  ["Kerb Weight", selected.weight],
+                  ["Production", selected.year],
+                ].map(([k, v]) => (
+                  <div key={k} className="spec-row">
+                    <span style={{ fontFamily: "'Montserrat', sans-serif", fontSize: "10px", letterSpacing: "2px", textTransform: "uppercase", color: "#5a5040" }}>{k}</span>
+                    <span style={{ fontFamily: "'Montserrat', sans-serif", fontSize: "12px", color: "#c8c0b0", fontWeight: 400 }}>{v}</span>
+                  </div>
+                ))}
+              </div>
+              <div style={{ marginTop: "32px", textAlign: "right" }}>
+                <button className="close-btn" onClick={() => setActive(null)}>Close</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
-    <div class="car-card reveal reveal-delay-3">
-      <img class="car-img" src="https://images.unsplash.com/photo-1572471275423-a6e40c020a46?w=800&q=80" alt="Subaru Impreza WRX STI">
-      <div class="car-overlay">
-        <span class="car-badge">Subaru · 1994</span>
-        <h3 class="car-name">Impreza WRX STI</h3>
-        <span class="car-spec-inline">EJ20 · 2.0L Flat-4 Turbo · AWD · DCCD</span>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- FEATURED / ICON -->
-<section class="featured" id="featured">
-  <div class="featured-image">
-    <img src="https://images.unsplash.com/photo-1549473472-b8972f16f96d?w=1000&q=80" alt="Nissan Skyline GT-R R34 Bayside Blue">
-    <div class="featured-label">Icon of the Era</div>
-  </div>
-  <div class="featured-content reveal">
-    <p class="section-eyebrow">The Benchmark</p>
-    <h2 class="section-title">Nissan Skyline<br><em>GT-R R34</em></h2>
-    <div class="divider"></div>
-    <p>
-      The R34 GT-R is the definitive expression of 1990s Japanese performance engineering. 
-      Nicknamed "Godzilla" by Australian journalists after decimating every car at Bathurst, 
-      the GT-R became a symbol of Japan's technological supremacy.
-    </p>
-    <p>
-      Its RB26DETT inline-six, co-developed with motorsport in mind, features an advanced 
-      all-wheel drive system (ATTESA E-TS Pro) and four-wheel steering (Super HICAS) — 
-      technology that rivalled contemporary supercars costing three times as much.
-    </p>
-    <table class="specs-table">
-      <tr><td>Engine</td><td>RB26DETT 2.6L Twin-Turbo Inline-6</td></tr>
-      <tr><td>Power</td><td><span class="highlight">330 PS</span> (official) / ~600 PS+ (actual)</td></tr>
-      <tr><td>Torque</td><td>392 Nm @ 4,400 rpm</td></tr>
-      <tr><td>Drivetrain</td><td>ATTESA E-TS Pro AWD</td></tr>
-      <tr><td>0–100 km/h</td><td><span class="highlight">4.1 seconds</span></td></tr>
-      <tr><td>Production</td><td>1999–2002 · 11,578 built</td></tr>
-      <tr><td>Nürburgring</td><td>7:42 (1999) — fastest production car of its era</td></tr>
-    </table>
-    <a href="#collection" class="btn-primary">View Available R34s</a>
-  </div>
-</section>
-
-<!-- CULTURE -->
-<section class="culture" id="culture">
-  <div class="culture-left reveal">
-    <p class="section-eyebrow">The Heritage</p>
-    <h2 class="section-title">More Than<br><em>Machines</em></h2>
-    <div class="divider"></div>
-    <p style="color: var(--light); line-height: 1.85; font-size: 0.95rem;">
-      JDM culture emerged from Japan's post-bubble era of extreme engineering ambition. 
-      These cars were never just transportation — they were expressions of a philosophy that 
-      precision, technology, and performance could coexist in perfect harmony.
-    </p>
-    <br>
-    <p style="color: var(--steel); font-size: 0.85rem; line-height: 1.8;">
-      Today, these cars have transcended their origins. They are cultural artifacts — 
-      preserved by collectors worldwide who understand that what Japan produced in the 1990s 
-      will never be replicated.
-    </p>
-  </div>
-  <div class="culture-right">
-    <div class="culture-card reveal reveal-delay-1">
-      <div class="culture-num">01</div>
-      <h3>Gentleman's Agreement</h3>
-      <p>Japan's automakers agreed to self-limit output to 276 hp publicly — while engineers quietly built engines producing far more. A gentlemen's agreement that produced some of the most deceptive performance cars ever made.</p>
-    </div>
-    <div class="culture-card reveal reveal-delay-1">
-      <div class="culture-num">02</div>
-      <h3>Tuner Culture</h3>
-      <p>Companies like HKS, Tomei, and Nismo turned already-capable platforms into weapons. The aftermarket ecosystem that grew around JDM cars is unparalleled in automotive history.</p>
-    </div>
-    <div class="culture-card reveal reveal-delay-2">
-      <div class="culture-num">03</div>
-      <h3>Motorsport DNA</h3>
-      <p>The GT-R won the Bathurst 1000. The Impreza and Lancer dominated WRC. The Supra ruled JGTC. Every road car carried racing heritage in its DNA — not as a marketing claim, but as fact.</p>
-    </div>
-    <div class="culture-card reveal reveal-delay-2">
-      <div class="culture-num">04</div>
-      <h3>The 25-Year Rule</h3>
-      <p>As these icons cross the 25-year import threshold into the US market, values have exploded. Certified originals from this era are now legitimate collectibles, with some R34 GT-Rs exceeding $1 million.</p>
-    </div>
-  </div>
-</section>
-
-<!-- FULL COLLECTION TABLE -->
-<section class="all-models" id="collection">
-  <p class="section-eyebrow reveal">Current Inventory</p>
-  <h2 class="section-title reveal" style="margin-bottom: 3rem;">The Full <em>Collection</em></h2>
-
-  <div class="models-list-header">
-    <span>Model</span>
-    <span>Year</span>
-    <span>Engine</span>
-    <span>Mileage</span>
-    <span>Status</span>
-  </div>
-
-  <div class="model-row reveal">
-    <div><div class="model-name">Skyline GT-R R34 V-Spec II</div><div class="model-maker">Nissan</div></div>
-    <div class="model-cell">2002</div>
-    <div class="model-cell">RB26DETT 2.6T</div>
-    <div class="model-cell gold">28,400 km</div>
-    <div><span class="status-badge status-available">Available</span></div>
-  </div>
-  <div class="model-row reveal">
-    <div><div class="model-name">Supra RZ Twin Turbo</div><div class="model-maker">Toyota</div></div>
-    <div class="model-cell">1994</div>
-    <div class="model-cell">2JZ-GTE 3.0T</div>
-    <div class="model-cell gold">41,000 km</div>
-    <div><span class="status-badge status-available">Available</span></div>
-  </div>
-  <div class="model-row reveal">
-    <div><div class="model-name">RX-7 Type RB FD3S</div><div class="model-maker">Mazda</div></div>
-    <div class="model-cell">1997</div>
-    <div class="model-cell">13B-REW Rotary</div>
-    <div class="model-cell gold">52,200 km</div>
-    <div><span class="status-badge status-reserved">Reserved</span></div>
-  </div>
-  <div class="model-row reveal">
-    <div><div class="model-name">NSX Type R</div><div class="model-maker">Honda / Acura</div></div>
-    <div class="model-cell">1992</div>
-    <div class="model-cell">C32B 3.2 VTEC</div>
-    <div class="model-cell gold">34,700 km</div>
-    <div><span class="status-badge status-available">Available</span></div>
-  </div>
-  <div class="model-row reveal">
-    <div><div class="model-name">Lancer Evolution VI Tommi Mäkinen</div><div class="model-maker">Mitsubishi</div></div>
-    <div class="model-cell">2000</div>
-    <div class="model-cell">4G63T 2.0T</div>
-    <div class="model-cell gold">67,900 km</div>
-    <div><span class="status-badge status-available">Available</span></div>
-  </div>
-  <div class="model-row reveal">
-    <div><div class="model-name">Impreza WRX STI Version VI</div><div class="model-maker">Subaru</div></div>
-    <div class="model-cell">1999</div>
-    <div class="model-cell">EJ20G 2.0T</div>
-    <div class="model-cell gold">44,100 km</div>
-    <div><span class="status-badge status-sold">Sold</span></div>
-  </div>
-  <div class="model-row reveal">
-    <div><div class="model-name">Skyline GT-R R33 V-Spec</div><div class="model-maker">Nissan</div></div>
-    <div class="model-cell">1995</div>
-    <div class="model-cell">RB26DETT 2.6T</div>
-    <div class="model-cell gold">58,300 km</div>
-    <div><span class="status-badge status-available">Available</span></div>
-  </div>
-  <div class="model-row reveal">
-    <div><div class="model-name">MR2 GT-S Turbo SW20</div><div class="model-maker">Toyota</div></div>
-    <div class="model-cell">1991</div>
-    <div class="model-cell">3S-GTE 2.0T Mid</div>
-    <div class="model-cell gold">76,500 km</div>
-    <div><span class="status-badge status-available">Available</span></div>
-  </div>
-  <div class="model-row reveal">
-    <div><div class="model-name">Integra Type R DC2</div><div class="model-maker">Honda / Acura</div></div>
-    <div class="model-cell">1998</div>
-    <div class="model-cell">B18C 1.8 VTEC</div>
-    <div class="model-cell gold">62,000 km</div>
-    <div><span class="status-badge status-reserved">Reserved</span></div>
-  </div>
-  <div class="model-row reveal">
-    <div><div class="model-name">Silvia S15 Spec R</div><div class="model-maker">Nissan</div></div>
-    <div class="model-cell">1999</div>
-    <div class="model-cell">SR20DET 2.0T</div>
-    <div class="model-cell gold">48,800 km</div>
-    <div><span class="status-badge status-available">Available</span></div>
-  </div>
-</section>
-
-<!-- FOOTER -->
-<footer>
-  <div>
-    <div class="footer-brand">JDM <span>Heritage</span></div>
-    <p>Curated Japanese performance vehicles from the golden era of automotive engineering. Each car authenticated, inspected, and ready for a new guardian.</p>
-    <br>
-    <p style="font-size:0.75rem; color: #444;">Project by Dior Jahaj &amp; Mateo Jaho<br>Canadian Institute of Technology · 2026</p>
-  </div>
-  <div class="footer-col">
-    <h4>Collection</h4>
-    <ul>
-      <li><a href="#">Nissan GT-R</a></li>
-      <li><a href="#">Toyota Supra</a></li>
-      <li><a href="#">Mazda RX-7</a></li>
-      <li><a href="#">Honda NSX</a></li>
-      <li><a href="#">Mitsubishi Evo</a></li>
-      <li><a href="#">Subaru STI</a></li>
-    </ul>
-  </div>
-  <div class="footer-col">
-    <h4>Information</h4>
-    <ul>
-      <li><a href="#">Import Process</a></li>
-      <li><a href="#">Certification</a></li>
-      <li><a href="#">25-Year Rule</a></li>
-      <li><a href="#">Financing</a></li>
-      <li><a href="#">Consignment</a></li>
-    </ul>
-  </div>
-  <div class="footer-col">
-    <h4>Contact</h4>
-    <ul>
-      <li><a href="#">Enquire Online</a></li>
-      <li><a href="#">Book Inspection</a></li>
-      <li><a href="#">Newsletter</a></li>
-      <li><a href="#">Instagram</a></li>
-    </ul>
-  </div>
-</footer>
-<div class="footer-bottom">
-  <p>© 2026 JDM Heritage. All rights reserved.</p>
-  <p>Dior Jahaj · Mateo Jaho · CIT Computer Networks Project</p>
-</div>
-
-<script>
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
-  }, { threshold: 0.1 });
-  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-</script>
-</body>
-</html>
+  );
+}
